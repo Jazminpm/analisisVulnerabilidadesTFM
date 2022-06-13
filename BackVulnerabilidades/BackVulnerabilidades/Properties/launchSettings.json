@@ -1,16 +1,19 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/BackVulnerabilidades",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:44051",
-      "sslPort": 44366
+      "applicationUrl": "http://localhost/analisisVulnerabilidades",
+      "sslPort": 0
     }
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
+      "commandName": "IIS",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -18,10 +21,10 @@
     "BackVulnerabilidades": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }
