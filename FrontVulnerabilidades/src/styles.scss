@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+h1 {
+  font-size: 22px !important;
+}
+h2 {
+  font-size: 20px !important;
+}
+h3 {
+  font-size: 18px !important;
+}
+h4 {
+  font-size: 16px !important;
+}
+
+.pointer {cursor: pointer;}
+.help {cursor: help;}
+
+
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
