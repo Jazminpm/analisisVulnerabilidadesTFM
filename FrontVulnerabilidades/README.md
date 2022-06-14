@@ -25,3 +25,20 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+# Crear una nueva KEYSTORE
+1. Ejecutar `keytool -genkey -v -keystore FrontVulnerabilidades.keystore -alias frontVulnerabilidades -keyalg RSA -keysize 2048 -validity 10000`.
+2. Ejecutar para convertirla en pkcs12 `keytool -importkeystore -srckeystore FrontVulnerabilidades.keystore -destkeystore FrontVulnerabilidades.keystore -deststoretype pkcs12`.
+
+# Generar APP BUNDLE MOVIL PARA ANDROID
+1. Ejecutar `npm run build`.
+2. Ejecutar `cordova run android` para comprobar que la aplicación se ejecuta correctamente.
+3. Abrir Android Studio y abrir la carpeta android ubicada dentro de plataforms.
+4. En el menu superior pulsar en Build -> Clean Project.
+5. En el menu superior pulsar en Build -> Generate Signed Bundle / APK...
+6. Seleccionar la ubicación de la clave firmada.
+   UBICACIÓN: .\FrontVulnerabilidades.keystore
+   CONSTRASEÑA: TFGJazminJhonny
+   ALIAS: frontVulnerabilidades
+   KEY PASSWORD: TFGJazminJhonny
+7. Pulsar a publicar en release y en app/release encontraremos la aplicación con el nombre `app-release.abb`.
