@@ -1,1 +1,17 @@
-<p>descubrimiento-activos works!</p>
+<div *ngIf="!listadoActivos; else mostrarContenido" style="height: 70vh"
+     class="align-items-center d-flex justify-content-center ">
+  <div>
+    <div class="w-100 d-flex justify-content-center mb-3">
+      <img src="assets/loading/loading.gif" alt="Cargando icono"
+           style="height: 150px !important; width: auto !important;"/>
+    </div>
+    <div class="text-center">
+      <h3>Estamos cargando todos los datos</h3>
+      <p style="font-size: 14px">Espere un momento</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #mostrarContenido>
+
+</ng-template>
