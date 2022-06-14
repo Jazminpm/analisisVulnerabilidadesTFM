@@ -31,9 +31,13 @@
               "src/assets"
             ],
             "styles": [
+              "bootswatch/dist/superhero/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {

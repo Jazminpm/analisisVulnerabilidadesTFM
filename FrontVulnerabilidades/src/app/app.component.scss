@@ -1,0 +1,15 @@
+.nav-link {
+  color: dimgrey !important;
+}
+
+.navbar-toggler {
+  border-color: lightgrey !important;
+}
+
+::ng-deep .mat-form-field-underline {
+  background-color: lightgrey !important;
+}
+
+.btn-circle {
+  border-radius: 50%;
+}
