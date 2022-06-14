@@ -31,4 +31,40 @@
   </div>
 </nav>
 
-<router-outlet></router-outlet>
+<div class="h-75">
+  <router-outlet></router-outlet>
+</div>
+
+<footer class="page-footer font-small pt-2" style="background: rgb(244,244,247);
+                    background: linear-gradient(180deg, rgba(244,244,247,1) 0%, rgba(255,255,255,0.053658963585434205) 100%, rgba(0,212,255,1) 100%);
+                    margin-top:0px;">
+  <div class="container-fluid text-center pt-4">
+    <!-- Content -->
+    <div class="pb-4">
+      <h3><b>Contacto</b></h3>
+      <a href="mailto:zparellada@soft-control.net" class="deco-none text-dark"><i class="far fa-envelope"></i> zparellada@soft-control.net</a><br />
+      <span><i class="fas fa-phone-alt"></i> 915076360 </span>
+    </div>
+
+    <div >
+      <!-- Links -->
+      <div class="pb-4">
+        <h3><b>Archivos de Interés</b></h3>
+        <ul class="list-unstyled">
+          <li>
+            <a routerLink="/aviso-legal" class="deco-none text-dark">Aviso Legal</a>
+          </li>
+          <li>
+            <a routerLink="/politica-privacidad" class="deco-none text-dark">Política de privacidad</a>
+          </li>
+          <li>
+            <a href="https://www.soft-control.net" class="pointer deco-none text-primary">
+              Desarrollado por Soft Control Informática
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Footer -->

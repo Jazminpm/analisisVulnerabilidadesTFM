@@ -11,6 +11,8 @@ import { EscanerSistemaOperativoComponent } from './@core/componentes/analisis/e
 import { ContenedorComponent } from './@core/componentes/contenedor/contenedor.component';
 import {AppConfig} from "./app.config";
 import {HttpClientModule} from "@angular/common/http";
+import {DataTablesModule} from "angular-datatables";
+import {ModalModule} from "ngb-modal";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {HttpClientModule} from "@angular/common/http";
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    NgbModule
+    NgbModule,
+    DataTablesModule,
+    ModalModule
   ],
   providers: [
     AppConfig,

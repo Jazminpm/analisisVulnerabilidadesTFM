@@ -33,6 +33,14 @@ namespace BackVulnerabilidades
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                    builder =>
+                                    {
+                                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+                                    });
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

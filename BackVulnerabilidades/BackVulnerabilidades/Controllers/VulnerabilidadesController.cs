@@ -53,6 +53,11 @@ namespace BackVulnerabilidades.Controllers
                     ip = nombreIp[1].Replace("(", "").Replace(")", "");
                 }
 
+                if (nombre == null || nombre == "")
+                {
+                    nombre = "Desconocido";
+                }
+
                 bool encendido = false;
                 if (salidas[i * 3 + 1].Contains("up")) {
                     encendido = true;
@@ -66,6 +71,10 @@ namespace BackVulnerabilidades.Controllers
                     string[] dirMacFabricante = salidas[i * 3 + 2].Split(" ");
                     dirMac = dirMacFabricante[0];
                     fabricante = dirMacFabricante[1].Replace("(", "").Replace(")", "");
+                }
+                if (fabricante == "Unknown" || fabricante == "" || fabricante == null)
+                {
+                    fabricante = "Desconocido";
                 }
 
 
