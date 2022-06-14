@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Dispositivo} from "../../../interfaces/dispositivo";
 
 @Component({
   selector: 'app-descubrimiento-activos',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class DescubrimientoActivosComponent implements OnInit {
 
   constructor() { }
-  listadoActivos: undefined;
+  listadoActivos: undefined | Array<Dispositivo>;
 
   ngOnInit(): void {
   }

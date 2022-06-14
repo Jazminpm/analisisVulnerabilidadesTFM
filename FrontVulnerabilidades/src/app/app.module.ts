@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import {AppRoutingModule, routes} from './app-routing.module';
@@ -9,6 +9,8 @@ import { DescubrimientoActivosComponent } from './@core/componentes/analisis/des
 import { EscanerPuertosComponent } from './@core/componentes/analisis/escaner-puertos/escaner-puertos.component';
 import { EscanerSistemaOperativoComponent } from './@core/componentes/analisis/escaner-sistema-operativo/escaner-sistema-operativo.component';
 import { ContenedorComponent } from './@core/componentes/contenedor/contenedor.component';
+import {AppConfig} from "./app.config";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -20,11 +22,15 @@ import { ContenedorComponent } from './@core/componentes/contenedor/contenedor.c
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot(routes, {useHash: true}),
     NgbModule
   ],
-  providers: [],
+  providers: [
+    AppConfig,
+    { provide: APP_INITIALIZER, useFactory: (config: AppConfig) => () => config.load(), deps: [AppConfig], multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
