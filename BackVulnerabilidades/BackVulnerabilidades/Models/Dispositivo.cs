@@ -46,7 +46,7 @@ namespace BackVulnerabilidades.Models
         public string CorriendoSO { get; set; }
 
         /// <summary>
-        /// CPE del Sitema Operativo
+        /// CPE del Sistema Operativo
         /// </summary>
         /// <example>Linux 2.6.X|3.X</example>
         public string CpeSO { get; set; }
@@ -62,6 +62,12 @@ namespace BackVulnerabilidades.Models
         /// </summary>
         /// <example>2 pasos</example>
         public string Distancia { get; set; }
+
+        /// <summary>
+        /// Indica si se muestra el dispositivo
+        /// </summary>
+        /// <example>false</example>
+        public bool Mostrar { get; set; }
     }
 
     public class ListaDispositivos

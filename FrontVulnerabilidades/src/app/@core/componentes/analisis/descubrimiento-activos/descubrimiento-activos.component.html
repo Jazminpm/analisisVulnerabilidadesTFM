@@ -1,16 +1,57 @@
-<div *ngIf="!listadoActivos; else mostrarContenido" style="height: 70vh"
-     class="align-items-center d-flex justify-content-center ">
-  <div>
-    <div class="w-100 d-flex justify-content-center mb-3">
-      <img src="assets/loading/loading.gif" alt="Cargando icono"
-           style="height: 150px !important; width: auto !important;"/>
+<div class="container mt-4">
+  <h1 class="mb-4"><a routerLink=".."><i class="fas fa-chevron-left mr-2"></i></a> Descubrimiento de activos</h1>
+</div>
+
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-4 col-md-8 mb-3">
+      <form [formGroup]="ipsForm">
+        <mat-form-field class="w-100" appearance="legacy">
+          <mat-label>Rango de Ips</mat-label>
+          <input matInput placeholder="192.168.1.0-255" formControlName="valor" name="num-note-search">
+          <div *ngIf="f['valor'].errors && f['valor'].touched &&
+               (f['valor'].errors['pattern'] || f['valor'].touched && f['valor'].errors['incorrectFormat'])"
+               class="error">Formato incorrecto
+          </div>
+        </mat-form-field>
+      </form>
     </div>
-    <div class="text-center">
-      <h3>Estamos cargando todos los datos</h3>
-      <p style="font-size: 14px">Espere un momento</p>
+    <div class="col-lg-2 col-md-4 mb-3">
+      <button type="button" class="btn btn-success w-100 mt-2"
+              [disabled]="ipsForm.invalid"
+              (click)="buscarActivos()">Buscar</button>
     </div>
   </div>
 </div>
+
+<div *ngIf="!listadoActivos && !buscando; else elseBuscando" class="container">
+  <div class="w-100 p-3 border border-info text-center" *ngIf="busqueda == 0">
+    Es necesario indicar los rangos de Ips internas para realizar la búsqueda
+  </div>
+
+  <div class="w-100 p-3 border border-danger text-white bg-danger text-center"
+       *ngIf="busqueda == 2">
+    No se ha encontrado ningún activo que coincida con la selección
+  </div>
+</div>
+
+
+<ng-template #elseBuscando>
+  <div *ngIf="!listadoActivos; else mostrarContenido" style="height: 70vh"
+       class="align-items-center d-flex justify-content-center ">
+    <div>
+      <div class="w-100 d-flex justify-content-center mb-3">
+        <img src="assets/loading/loading.gif" alt="Cargando icono"
+             style="height: 150px !important; width: auto !important;"/>
+      </div>
+      <div class="text-center">
+        <h3>Estamos cargando todos los datos</h3>
+        <p style="font-size: 14px">Espere un momento</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #mostrarContenido>
   <div class="container">
@@ -27,9 +68,9 @@
           <tr style="font-size: 14px">
             <th class="bg-light font-weight-light p-2" [ngClass]="{'font-12px': innerWidth < 770}">Nombre</th>
             <th class="bg-light font-weight-light p-2" [ngClass]="{'font-12px': innerWidth < 770}">Dirección IP</th>
-            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 770">Dirección MAC</th>
-            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 770">Fabricante</th>
-            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 770">Estado</th>
+            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 900">Dirección MAC</th>
+            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 1000">Fabricante</th>
+            <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 1000">Estado</th>
           </tr>
         </thead>
         <tbody>
@@ -40,13 +81,13 @@
             <td [ngClass]="{'font-12px': innerWidth < 770}">
               {{dispositivo.dirIp}}
             </td>
-            <td [hidden]="innerWidth <= 770">
+            <td [hidden]="innerWidth <= 900">
               {{dispositivo.dirMac}}
             </td>
-            <td [hidden]="innerWidth <= 770">
+            <td [hidden]="innerWidth <= 1000">
               {{dispositivo.fabricante}}
             </td>
-            <td [hidden]="innerWidth <= 770">
+            <td [hidden]="innerWidth <= 1000">
               <span *ngIf="dispositivo.encendido; else apagado" class="text-success">
                 Encendido
               </span>

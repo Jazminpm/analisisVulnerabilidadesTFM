@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,12 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace BackVulnerabilidades
 {
@@ -48,11 +44,10 @@ namespace BackVulnerabilidades
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Remesas - Docentación de la API",
-                    Description = "Documentación de la API para la aplicación de remesas.",
+                    Title = "Análisis de Activos - Documentación de la API",
+                    Description = "Documentación de la API para la aplicación de el TFM.",
                     // TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
+                    Contact = new OpenApiContact {
                         Name = "Soft Control Informática",
                         Email = "zparellada@soft-control.net",
                         Url = new Uri("https://soft-control.net"),
@@ -80,9 +75,11 @@ namespace BackVulnerabilidades
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                // c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+                c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
             });
+
             services.AddSwaggerExamples();
+            //c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);        services.AddSwaggerExamples();
             // services.AddSwaggerExamplesFromAssemblyOf(typeof(EjemploErroresLogin));
         }
 

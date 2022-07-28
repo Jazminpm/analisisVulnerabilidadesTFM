@@ -1,1 +1,135 @@
-<p>escaner-puertos works!</p>
+<div class="container mt-4">
+  <h1 class="mb-4"><a routerLink=".."><i class="fas fa-chevron-left mr-2"></i></a> Escaner de puertos</h1>
+</div>
+
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-4 col-md-8 mb-3">
+      <form [formGroup]="ipsForm">
+        <mat-form-field class="w-100" appearance="legacy">
+          <mat-label>Rango de Ips</mat-label>
+          <input matInput placeholder="192.168.1.0-255" formControlName="valor" name="num-note-search">
+          <div *ngIf="f['valor'].errors && f['valor'].touched &&
+               (f['valor'].errors['pattern'] || f['valor'].touched && f['valor'].errors['incorrectFormat'])"
+               class="error">Formato incorrecto
+          </div>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-3">
+      <button type="button" class="btn btn-success w-100 mt-2"
+              [disabled]="ipsForm.invalid"
+              (click)="buscarPuertosAbiertos()">Buscar</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="!listaPuertosPorDispositivo && !buscando; else elseBuscando" class="container">
+  <div class="w-100 p-3 border border-info text-center" *ngIf="busqueda == 0">
+    Es necesario indicar los rangos de Ips internas para realizar la búsqueda
+  </div>
+
+  <div class="w-100 p-3 border border-danger text-white bg-danger text-center"
+       *ngIf="busqueda == 2">
+    No se ha encontrado ningún activo que coincida con la selección
+  </div>
+</div>
+
+<ng-template #elseBuscando>
+  <div *ngIf="!listaPuertosPorDispositivo; else mostrarContenido" style="height: 70vh"
+       class="align-items-center d-flex justify-content-center ">
+    <div>
+      <div class="w-100 d-flex justify-content-center mb-3">
+        <img src="assets/loading/loading.gif" alt="Cargando icono"
+             style="height: 150px !important; width: auto !important;"/>
+      </div>
+      <div class="text-center">
+        <h3>Estamos cargando todos los datos</h3>
+        <p style="font-size: 14px">Espere un momento</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #mostrarContenido>
+  <div class="container mt-5">
+    <div *ngFor="let dispositivo of listaPuertosPorDispositivo"  style="border: black 1px solid;">
+      <div  class="w-100 p-2 text-primary pointer" style="border: black 1px solid;"
+            (click)="dispositivo.mostrar = !dispositivo.mostrar">
+        <div class="col-md-6 col-12">
+          {{dispositivo.nombre}} ({{dispositivo.dirIp}})
+        </div>
+      </div>
+
+      <div [hidden]="!dispositivo.mostrar" class="p-2">
+        <div *ngIf="dispositivo.puertos.length == 0; else infoPuertos" style="border: 1px solid" class="border-info text-center">
+          27 puertos tcp cerrados
+        </div>
+
+        <ng-template #infoPuertos>
+          <table datatable [dtOptions]="dtOptions" class="table table-striped table-bordered table-sm w-100">
+            <thead>
+            <tr>
+              <th class="bg-primary" colspan="10">
+                <h4 class="mb-0 text-white">
+                  Listado de puertos
+                </h4>
+              </th>
+            </tr>
+            <tr style="font-size: 14px">
+              <th class="bg-light font-weight-light p-2" [ngClass]="{'font-12px': innerWidth < 770}">Puerto</th>
+              <th class="bg-light font-weight-light p-2" [ngClass]="{'font-12px': innerWidth < 770}">TCP/UDP</th>
+              <th class="bg-light font-weight-light p-2" [ngClass]="{'font-12px': innerWidth < 770}">Estado</th>
+              <th class="bg-light font-weight-light p-2" [hidden]="innerWidth <= 770">Servicio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let puerto of dispositivo.puertos" class="pointer">
+              <td [ngClass]="{'font-12px': innerWidth < 770}">
+                {{puerto.puerto}}
+              </td>
+              <td [ngClass]="{'font-12px': innerWidth < 770}">
+                <span *ngIf="puerto.tcp; else UDP">
+                  TCP
+                </span>
+                <ng-template #UDP>
+                  <span>UDP</span>
+                </ng-template>
+              </td>
+              <td [ngClass]="{'font-12px': innerWidth < 770, 'text-success': puerto.estado.includes('Cerrado'),
+               'text-danger': puerto.estado.includes('Abierto')}">
+                {{puerto.estado}}
+              </td>
+              <td [hidden]="innerWidth <= 770">
+                {{puerto.servicio}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<modal #detallesActivo>
+  <modal-header><h2>Detalles del activo</h2></modal-header>
+
+  <modal-content *ngIf="dispositivoSeleccionado">
+    <b>Nombre:</b> {{dispositivoSeleccionado.nombre}} <br/>
+    <b>Dirección IP:</b> {{dispositivoSeleccionado.dirIp}} <br/>
+    <b>Dirección MAC:</b> {{dispositivoSeleccionado.dirMac}} <br/>
+    <b>Fabricante:</b> {{dispositivoSeleccionado.fabricante}} <br/>
+    <b>Estado:</b>
+    <span *ngIf="dispositivoSeleccionado.encendido; else apagado" class="text-success">
+                Encendido
+              </span>
+    <ng-template #apagado>
+      <span class="text-danger">Apagado</span>
+    </ng-template>
+  </modal-content>
+</modal>

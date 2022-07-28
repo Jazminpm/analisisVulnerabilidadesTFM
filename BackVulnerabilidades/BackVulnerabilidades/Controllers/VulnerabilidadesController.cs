@@ -18,86 +18,104 @@ namespace BackVulnerabilidades.Controllers
         /// <summary>
         /// Obtener listado de activos en la red
         /// </summary>
-        [HttpGet("[action]", Name = "Obtener listado de activos en la red")]
-        [SwaggerResponse(200, "Devuelve una lista con los activos en la red")]
-        public ActionResult ObtenerActivos()
+        [HttpPost("[action]", Name = "Obtener listado de activos en la red")]
+        [SwaggerResponse(200, "Devuelve una lista con los activos en la red", typeof(List<Dispositivo>))]
+        [SwaggerResponse(400, "Error con los datos de introducidos.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
+        public ActionResult ObtenerActivos([FromBody] Texto request)
         {
-            var cmdsi = new ProcessStartInfo("C:\\Program Files (x86)\\Nmap\\nmap.exe");
-            cmdsi.Arguments = "-sn 192.168.1.1-255";
-            cmdsi.RedirectStandardOutput = true;
-            cmdsi.UseShellExecute = false;
-            var cmd = Process.Start(cmdsi);
-            var output = cmd.StandardOutput.ReadToEnd();
-
-            cmd.WaitForExit();
-
-
-            string[] outputs = output.Split("\r\n");
-            List<string> salidas = outputs.OfType<string>().ToList();
-            salidas.RemoveRange(0, 1);
-            salidas.RemoveRange(salidas.Count-2, 2);
-
-            List<Dispositivo> dispositivos = new List<Dispositivo>();
-            for (int i = 0; i <= salidas.Count / 3; i++)
+            if (ModelState.IsValid)
             {
-                string nombre = null;
-                string ip;
-                salidas[i * 3] = salidas[i * 3].Replace("Nmap scan report for ", "");
-                string[] nombreIp = salidas[i * 3].Split(" ");
-                if (nombreIp.Length == 1)
-                {
-                    ip = nombreIp[0].Replace("(", "").Replace(")", "");
-                } else
-                {
-                    nombre = nombreIp[0];
-                    ip = nombreIp[1].Replace("(", "").Replace(")", "");
-                }
 
-                if (nombre == null || nombre == "")
-                {
-                    nombre = "Desconocido";
-                }
+                var cmdsi = new ProcessStartInfo("C:\\Program Files (x86)\\Nmap\\nmap.exe");
+                cmdsi.Arguments = "-sn " + request.Valor;
+                cmdsi.RedirectStandardOutput = true;
+                cmdsi.UseShellExecute = false;
+                var cmd = Process.Start(cmdsi);
+                var output = cmd.StandardOutput.ReadToEnd();
 
-                bool encendido = false;
-                if (salidas[i * 3 + 1].Contains("up")) {
-                    encendido = true;
-                }
-
-                string dirMac = null;
-                string fabricante = null;
-                if (i != salidas.Count / 3)
-                {
-                    salidas[i * 3 + 2] = salidas[i * 3 + 2].Replace("MAC Address: ", "");
-                    string[] dirMacFabricante = salidas[i * 3 + 2].Split(" ");
-                    dirMac = dirMacFabricante[0];
-                    fabricante = dirMacFabricante[1].Replace("(", "").Replace(")", "");
-                }
-                if (fabricante == "Unknown" || fabricante == "" || fabricante == null)
-                {
-                    fabricante = "Desconocido";
-                }
+                cmd.WaitForExit();
 
 
-                dispositivos.Add(
-                    new Dispositivo()
+                string[] outputs = output.Split("\r\n");
+                List<string> salidas = outputs.OfType<string>().ToList();
+                if (salidas.Count < 4)
+                {
+                    return Ok(new List<Dispositivo>());
+                }
+
+                salidas.RemoveRange(0, 1);
+                salidas.RemoveRange(salidas.Count - 2, 2);
+
+                List<Dispositivo> dispositivos = new List<Dispositivo>();
+                for (int i = 0; i <= salidas.Count / 3; i++)
+                {
+                    string nombre = null;
+                    string ip;
+                    salidas[i * 3] = salidas[i * 3].Replace("Nmap scan report for ", "");
+                    string[] nombreIp = salidas[i * 3].Split(" ");
+                    if (nombreIp.Length == 1)
                     {
-                        Nombre = nombre,
-                        DirIp = ip,
-                        Encendido = encendido,
-                        DirMac = dirMac,
-                        Fabricante = fabricante
+                        ip = nombreIp[0].Replace("(", "").Replace(")", "");
                     }
-                );
-            }
+                    else
+                    {
+                        nombre = nombreIp[0];
+                        ip = nombreIp[1].Replace("(", "").Replace(")", "");
+                    }
 
-            return Ok(dispositivos);
+                    if (nombre == null || nombre == "")
+                    {
+                        nombre = "Desconocido";
+                    }
+
+                    bool encendido = false;
+                    if (salidas[i * 3 + 1].Contains("up"))
+                    {
+                        encendido = true;
+                    }
+
+                    string dirMac = null;
+                    string fabricante = null;
+                    if (i != salidas.Count / 3)
+                    {
+                        salidas[i * 3 + 2] = salidas[i * 3 + 2].Replace("MAC Address: ", "");
+                        string[] dirMacFabricante = salidas[i * 3 + 2].Split(" ");
+                        dirMac = dirMacFabricante[0];
+                        fabricante = dirMacFabricante[1].Replace("(", "").Replace(")", "");
+                    }
+                    if (fabricante == "Unknown" || fabricante == "" || fabricante == null)
+                    {
+                        fabricante = "Desconocido";
+                    }
+
+
+                    dispositivos.Add(
+                        new Dispositivo()
+                        {
+                            Nombre = nombre,
+                            DirIp = ip,
+                            Encendido = encendido,
+                            DirMac = dirMac,
+                            Fabricante = fabricante
+                        }
+                    );
+                }
+
+                return Ok(dispositivos);
+            } else
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
         /// Obtener listado de puertos abiertos en uno/varios dispositivos
         /// </summary>
         [HttpPost("[action]", Name = "Obtener listado de puertos abiertos en uno/varios dispositivos")]
-        [SwaggerResponse(200, "Devuelve una lista con los puertos abiertos en uno/varios dispositivos")]
+        [SwaggerResponse(200, "Devuelve una lista con los puertos abiertos en uno/varios dispositivos", typeof(List<Dispositivo>))]
+        [SwaggerResponse(400, "Error con los datos de introducidos.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
         public ActionResult ObtenerPuertosAbiertos([FromBody] Texto request)
         {
             string puertoscomunes = "20,21,22,23,25,53,80,110,119,123,143,161,194,443,445,465,631,902,912,7070,993,995,1433,1434,3389,5357,8080";
@@ -215,7 +233,9 @@ namespace BackVulnerabilidades.Controllers
         /// Obtener listado de sistemas operativos
         /// </summary>
         [HttpPost("[action]", Name = "Obtener listado de sistemas operativos en uno/varios dispositivos")]
-        [SwaggerResponse(200, "Devuelve una lista con los sistemas operativos abiertos en uno/varios dispositivos")]
+        [SwaggerResponse(200, "Devuelve una lista con los sistemas operativos abiertos en uno/varios dispositivos", typeof(List<Dispositivo>))]
+        [SwaggerResponse(400, "Error con los datos de introducidos.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
         public ActionResult ObtenerSistemasOperativos([FromBody] Texto request)
         {
             string puertoscomunes = "20,21,22,23,25,53,80,110,119,123,143,161,194,443,465,631,993,995,1433,1434,3389,8080";

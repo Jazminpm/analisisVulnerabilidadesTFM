@@ -13,6 +13,10 @@ import {AppConfig} from "./app.config";
 import {HttpClientModule} from "@angular/common/http";
 import {DataTablesModule} from "angular-datatables";
 import {ModalModule} from "ngb-modal";
+import {MatInputModule} from "@angular/material/input";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,12 +28,17 @@ import {ModalModule} from "ngb-modal";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot(routes, {useHash: true}),
     NgbModule,
     DataTablesModule,
-    ModalModule
+    ModalModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     AppConfig,

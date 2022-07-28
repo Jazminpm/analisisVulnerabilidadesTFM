@@ -11,6 +11,7 @@ export interface Dispositivo {
   cpeSO: string;
   detallesSO: string;
   distancia: string;
+  mostrar: boolean;
 }
 
 export interface ListaDispositivos {

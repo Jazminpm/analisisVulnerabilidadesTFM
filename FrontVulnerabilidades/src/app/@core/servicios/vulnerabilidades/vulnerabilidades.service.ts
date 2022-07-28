@@ -12,8 +12,8 @@ export class VulnerabilidadesService {
     this.environmentUrl = this.config.getConfig('host');
   }
 
-  obtenerActivos() {
-    return this.httpClient.get(this.environmentUrl + endpoints.obtenerActivos);
+  obtenerActivos(valor: string) {
+    return this.httpClient.post(this.environmentUrl + endpoints.obtenerActivos, {valor});
   }
 
   obtenerPuertosAbiertos(valor: string) {
